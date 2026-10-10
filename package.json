@@ -1,11 +1,11 @@
 {
-	"name": "blog",
+	"name": "dev",
 	"version": "0.0.0",
 	"private": true,
-	"homepage": "https://prncss-xyz.github.io/blog/",
+	"homepage": "https://prncss-xyz.github.io/dev/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/prncss-xyz/blog.git"
+		"url": "https://github.com/prncss-xyz/dev.git"
 	},
 	"type": "module",
 	"scripts": {

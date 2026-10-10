@@ -44,12 +44,12 @@ const styles = stylex.create({
 			[breakpoints.md]: borderRadii[1],
 		},
 	},
-	pageBackground: (imageUrl: string) => ({
+	contentPanel: {
 		backgroundColor: '#303030',
-		backgroundImage: imageUrl,
+		backgroundImage: `url("${stylex.env.basePath}images/hex-pattern.svg")`,
 		backgroundPosition: '0 -44.500383px',
 		backgroundRepeat: 'repeat',
-	}),
+	},
 })
 
 export default async function RootLayout({
@@ -105,9 +105,7 @@ export default async function RootLayout({
 				</Row>
 			</Row>
 			<Col
-				style={styles.pageBackground(
-					`url("${basePath}images/hex-pattern.svg")`,
-				)}
+				style={styles.contentPanel}
 				w='full'
 				grow={1}
 				pt={8}

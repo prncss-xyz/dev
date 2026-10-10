@@ -9,6 +9,7 @@ import { defineConfig } from 'vite-plus'
 import { viteWebfontDownloadConfig } from './fontConstants'
 import fmt from './oxfmt.config'
 import lint from './oxlint.config'
+import { buildBasePath } from './src/basePath'
 import {
 	stylexLightningCssOptions,
 	stylexRootCssInjectionTarget,
@@ -34,6 +35,9 @@ export default defineConfig({
 		process.env.VITEST
 			? null
 			: stylex.vite({
+					env: {
+						basePath: buildBasePath(process.env),
+					},
 					aliases: {
 						'@/*': [fileURLToPath(new URL('./src/*', import.meta.url))],
 					},
