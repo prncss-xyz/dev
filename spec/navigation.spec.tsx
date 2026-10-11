@@ -10,6 +10,8 @@ test('navigation highlights the destination before its page loads', async ({
 	const root = buildBasePath(process.env)
 	await page.goto(root)
 	await page.waitForLoadState('networkidle')
+	const content = page.locator('main > div > div:not([inert])')
+	await expect(content).toHaveCSS('mix-blend-mode', 'normal')
 	let release: () => void = noop
 	const responseGate = new Promise<void>((resolve) => {
 		release = resolve
@@ -36,6 +38,7 @@ test('navigation highlights the destination before its page loads', async ({
 						opacity,
 						duration: effect.getTiming().duration,
 						heading: effect.target.querySelector('h1')?.textContent,
+						blendMode: getComputedStyle(effect.target).mixBlendMode,
 					},
 				]
 			})
@@ -73,8 +76,14 @@ test('navigation highlights the destination before its page loads', async ({
 				opacity: ['1', '0'],
 				duration: expect.any(Number),
 				heading: 'About Me',
+				blendMode: 'plus-lighter',
 			},
-			{ opacity: ['0', '1'], duration: expect.any(Number), heading: 'Blog' },
+			{
+				opacity: ['0', '1'],
+				duration: expect.any(Number),
+				heading: 'Blog',
+				blendMode: 'plus-lighter',
+			},
 		]),
 	)
 	const [duration] = fades.map((fade: { duration: number }) => fade.duration)
@@ -83,6 +92,7 @@ test('navigation highlights the destination before its page loads', async ({
 	await expect(
 		page.getByRole('heading', { name: 'About Me', exact: true }),
 	).not.toBeVisible()
+	await expect(content).toHaveCSS('mix-blend-mode', 'normal')
 	await page.emulateMedia({ reducedMotion: 'reduce' })
 	const reducedDuration = await page.evaluate(
 		() =>
@@ -101,4 +111,5 @@ test('navigation highlights the destination before its page loads', async ({
 	await expect(
 		page.getByRole('heading', { name: 'Blog', exact: true }),
 	).not.toBeVisible()
+	await expect(content).toHaveCSS('mix-blend-mode', 'normal')
 })

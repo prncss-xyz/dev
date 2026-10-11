@@ -291,10 +291,6 @@ const backgroundVariants = stylex.create({
 	primary: { backgroundColor: colors.primary },
 	accent: { backgroundColor: colors.accent },
 	accentBg: { backgroundColor: colors.accentBg },
-	translucent: {
-		backgroundColor: `color-mix(in srgb, ${colors.background}, transparent 40%)`,
-		backdropFilter: 'blur(12px)',
-	},
 })
 
 const borderColorVariants = stylex.create({

@@ -5,11 +5,12 @@ import { PageMeta } from '@/components/PageMeta'
 import { Box } from '@/layouts/Box'
 import { markdownElements } from '@/layouts/MD'
 import { createMD } from '@/layouts/MD/createMD'
+import { colors } from '@/layouts/tokens/colors.stylex'
 import { getPage } from '@/utils/getPage'
 
 const styles = stylex.create({
 	lighterSection: {
-		backgroundColor: 'rgb(255 255 255 / 8%)',
+		backgroundColor: colors.accentBg,
 	},
 })
 

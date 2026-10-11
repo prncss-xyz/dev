@@ -11,9 +11,11 @@ const styles = stylex.create({
 	layers: { position: 'relative', isolation: 'isolate' },
 	content: {
 		animationDuration: animationDurations.normal,
-		// StyleX's validator and types predate plus-lighter; keep its runtime value.
+	},
+	crossfade: {
+		// StyleX's validator does not yet recognize plus-lighter.
 		// oxlint-disable-next-line stylex/valid-styles
-		mixBlendMode: 'plus-lighter' as 'normal',
+		mixBlendMode: 'plus-lighter',
 	},
 	outgoing: {
 		position: 'absolute',
@@ -35,19 +37,28 @@ function startCrossfade(
 	outgoing.inert = true
 	outgoing.setAttribute('aria-hidden', 'true')
 	layers.append(outgoing)
+	const blendClasses =
+		stylex.props(styles.crossfade).className?.split(' ') ?? []
+	content.classList.add(...blendClasses)
+	outgoing.classList.add(...blendClasses)
 
 	const options = { duration, easing: 'linear', fill: 'both' as const }
 	const animations = [
 		outgoing.animate({ opacity: [1, 0] }, options),
 		content.animate({ opacity: [0, 1] }, options),
 	]
+	let cleanedUp = false
 	function cleanup() {
+		if (cleanedUp) return
+		cleanedUp = true
+		content.classList.remove(...blendClasses)
+		outgoing.classList.remove(...blendClasses)
 		animations.forEach((animation) => animation.cancel())
 		outgoing.remove()
 	}
 	void Promise.all(animations.map((animation) => animation.finished)).then(
 		cleanup,
-		() => {},
+		cleanup,
 	)
 	return cleanup
 }

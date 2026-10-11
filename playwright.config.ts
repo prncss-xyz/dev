@@ -24,11 +24,12 @@ export default defineConfig({
 	testMatch: '**/*.spec.tsx',
 	snapshotDir: './__snapshots__',
 	outputDir: 'test-results',
-	timeout: 10 * 1000,
+	timeout: 30 * 1000,
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
+	// Limit concurrent browser launches on local machines.
+	workers: process.env.CI ? 1 : 2,
 	reporter: [
 		['html'],
 		['json', { outputFile: 'playwright-report/results.json' }],

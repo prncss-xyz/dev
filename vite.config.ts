@@ -132,6 +132,7 @@ export default defineConfig({
 						'content/**',
 						'**/src/**/*.{js,ts,jsx,tsx}',
 						'playwright.config.ts',
+						'spec/**/*.spec.tsx',
 					],
 					env: ['VITE_GITHUB_REPOSITORY', 'VITE_BASE_URL', 'VITE_BASE_PATH'],
 				},

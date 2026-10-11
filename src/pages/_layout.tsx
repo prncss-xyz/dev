@@ -126,7 +126,7 @@ export default async function RootLayout({
 				justify='between'
 			>
 				<Col
-					bg='translucent'
+					bg='background'
 					style={styles.panel}
 					maxW='full'
 					w='readable'
@@ -142,7 +142,7 @@ export default async function RootLayout({
 					justify='center'
 					py={4}
 					color='accent'
-					bg='translucent'
+					bg='background'
 					gap={4}
 					as='footer'
 				>
