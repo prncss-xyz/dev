@@ -20,7 +20,7 @@ const styles = stylex.create({
 	},
 })
 
-export function Image({
+export function ImageWithPlaceHolder({
 	image: { alt, height, placeholder, src, srcSet, width },
 	imgStyle,
 	style,

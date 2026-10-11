@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex'
 
 import { Box, type BoxProps } from '../Box'
 import { getResponsiveImage } from '../images/getResponsiveImage'
-import { Image } from '../images/OptimizedImage'
+import { ImageWithPlaceHolder } from './ImageWithPlaceHolder'
 
 const styles = stylex.create({
 	container: {
@@ -47,7 +47,7 @@ export async function Img({
 			)
 		const image = await getResponsiveImage(src, alt).catch(() => null)
 		return image ? (
-			<Image
+			<ImageWithPlaceHolder
 				image={image}
 				imgStyle={styles.image}
 				maxH='halfScreen'

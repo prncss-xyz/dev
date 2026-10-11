@@ -15,7 +15,7 @@ const styles = stylex.create({
 
 function Section({ children, index }: { children?: ReactNode; index: number }) {
 	return (
-		<Box as='section' p={5} style={index % 2 === 0 && styles.lighterSection}>
+		<Box as='section' p={5} style={index % 2 === 1 && styles.lighterSection}>
 			{children}
 		</Box>
 	)
