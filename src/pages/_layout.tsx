@@ -20,7 +20,7 @@ const styles = stylex.create({
 	root: {
 		paddingTop: {
 			default: spaces[4],
-			[breakpoints.md]: spaces[8],
+			[breakpoints.md]: spaces[7],
 		},
 	},
 	header: {
@@ -46,6 +46,10 @@ const styles = stylex.create({
 		},
 	},
 	contentPanel: {
+		paddingTop: {
+			default: spaces[7],
+			[breakpoints.md]: spaces[8],
+		},
 		backgroundColor: '#303030',
 		backgroundImage: `url("${stylex.env.basePath}images/hex-pattern.svg")`,
 		backgroundPosition: '0 -44.500383px',
@@ -110,13 +114,19 @@ export default async function RootLayout({
 				style={styles.contentPanel}
 				w='full'
 				grow={1}
-				pt={8}
 				pb={6}
 				gap={7}
 				align='center'
 				justify='between'
 			>
-				<Col bg='translucent' maxW='full' w='readable' grow={1} as='main'>
+				<Col
+					bg='translucent'
+					style={styles.panel}
+					maxW='full'
+					w='readable'
+					grow={1}
+					as='main'
+				>
 					<PageContents>{children}</PageContents>
 				</Col>
 				<Row
