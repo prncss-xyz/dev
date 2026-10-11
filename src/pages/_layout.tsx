@@ -24,6 +24,12 @@ const styles = stylex.create({
 		},
 	},
 	header: {
+		position: 'sticky',
+		top: 0,
+		zIndex: 10,
+		backgroundColor: colors.background,
+	},
+	headerContents: {
 		paddingLeft: {
 			default: spaces[5],
 			[breakpoints.md]: '0px',
@@ -78,38 +84,38 @@ export default async function RootLayout({
 			/>
 			<DevStyleXInject />
 			<DocumentScrollbars />
-			<Row
-				as='header'
-				style={styles.header}
-				pb={4}
-				gap={5}
-				maxW='full'
-				w='readable'
-				wrap
-				align='center'
-				justify='between'
-				borderColor='accent'
-				borderWidth='thin'
-				border='bottom'
-			>
-				<Box fontSize={5}>{title}</Box>
-				<Row gap={5} wrap>
-					{allPages.map(({ slug, title }) => {
-						const to = '/' + (slug === 'about' ? '' : slug)
-						return (
-							<Box
-								as={NavLink}
-								key={to}
-								to={to}
-								style={styles.navLink}
-								fontSize={4}
-							>
-								{title}
-							</Box>
-						)
-					})}
+			<Col as='header' style={styles.header} w='full' align='center'>
+				<Row
+					style={styles.headerContents}
+					pb={4}
+					gap={5}
+					maxW='full'
+					w='readable'
+					wrap
+					align='center'
+					justify='between'
+				>
+					<Box as={NavLink} to='/' fontSize={5}>
+						{title}
+					</Box>
+					<Row gap={5} wrap>
+						{allPages.map(({ slug, title }) => {
+							const to = '/' + (slug === 'about' ? '' : slug)
+							return (
+								<Box
+									as={NavLink}
+									key={to}
+									to={to}
+									style={styles.navLink}
+									fontSize={4}
+								>
+									{title}
+								</Box>
+							)
+						})}
+					</Row>
 				</Row>
-			</Row>
+			</Col>
 			<Col
 				style={styles.contentPanel}
 				w='full'
