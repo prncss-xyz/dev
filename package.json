@@ -31,6 +31,7 @@
 		"@stylexjs/stylex": "^0.19.1",
 		"feed": "^6.0.0",
 		"hast-util-to-string": "^3.0.1",
+		"overlayscrollbars": "^2.16.0",
 		"playwright": "1.63.0",
 		"playwright-core": "1.63.0",
 		"qrcode": "^1.5.4",

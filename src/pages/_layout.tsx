@@ -8,6 +8,7 @@ import { PageMeta } from '@/components/PageMeta'
 import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
+import { DocumentScrollbars } from '@/layouts/DocumentScrollbars'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
 import { breakpoints } from '@/layouts/tokens/breakpoints.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
@@ -72,6 +73,7 @@ export default async function RootLayout({
 				href={basePath + 'images/favicon.svg'}
 			/>
 			<DevStyleXInject />
+			<DocumentScrollbars />
 			<Row
 				as='header'
 				style={styles.header}

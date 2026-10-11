@@ -12,7 +12,8 @@ const styles = stylex.create({
 	root: {
 		backgroundColor: colors.background,
 		color: colors.text,
-		scrollbarGutter: 'stable',
+		overflowY: 'auto',
+		scrollbarWidth: 'none',
 	},
 })
 
