@@ -1,5 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
-import { Link } from 'waku'
+
+import { NavLink } from '@/components/NavLink'
 
 import { fontSizes } from '../tokens/fontSizes.stylex'
 import { fontWeights } from '../tokens/fontWeights.stylex'
@@ -15,9 +16,13 @@ const styles = stylex.create({
 export function A({ children, href, style, ...rest }: ReElemProps<'a'>) {
 	if (href && (href.startsWith('/') || href.startsWith('.')))
 		return (
-			<Link to={href as any} {...rest} {...stylex.props([styles.base, style])}>
+			<NavLink
+				to={href as any}
+				{...rest}
+				{...stylex.props([styles.base, style])}
+			>
 				{children}
-			</Link>
+			</NavLink>
 		)
 	return (
 		<a

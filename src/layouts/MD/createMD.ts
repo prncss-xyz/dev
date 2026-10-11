@@ -149,6 +149,9 @@ async function createParser(markdown: string) {
 					theme: 'dark',
 				},
 				launchOptions: {
+					// Diagrams only need SVG layout. Avoid GPU initialization in the
+					// headless renderer, which can stall local file navigation.
+					args: ['--disable-gpu'],
 					...(!process.env.CI && { executablePath: '/usr/bin/chromium' }),
 				},
 			})

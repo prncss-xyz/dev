@@ -83,6 +83,18 @@ describe('mdToText', async () => {
 })
 
 describe('mdToHtml', () => {
+	test('renders the hello-world post for concurrent requests', async () => {
+		const post = await readFile('content/blog/hello-world.md', 'utf8')
+		const results = await Promise.all(
+			Array.from({ length: 3 }, () => mdToHtml(post)),
+		)
+		for (const html of results) {
+			expect(html).toContain('<picture>')
+			expect(html).toContain('data:image/svg+xml,')
+			expect(html).toContain('This is the content of the post.')
+		}
+	}, 30_000)
+
 	test('wires dual-theme token variables to visible syntax colors', async () => {
 		const [html, css] = await Promise.all([
 			mdToHtml('```js\nconst x = 3\n```'),

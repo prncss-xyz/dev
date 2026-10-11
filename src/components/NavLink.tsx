@@ -6,6 +6,7 @@ export function NavLink({
 	to,
 	children,
 	onClick,
+	scroll,
 	...rest
 }: Omit<ComponentProps<typeof Link>, 'to'> & { to: string }) {
 	const { path, push } = useRouter()
@@ -28,9 +29,22 @@ export function NavLink({
 				)
 					return
 				event.preventDefault()
+				const destination = new URL(event.currentTarget.href)
+				const smoothScroll =
+					scroll !== false && !destination.hash && (scroll || path !== to)
+				if (smoothScroll) {
+					window.scrollTo({
+						left: 0,
+						top: 0,
+						behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+							.matches
+							? 'instant'
+							: 'smooth',
+					})
+				}
 				startTransition(async () => {
 					selectPath(to)
-					await push(to as any)
+					await push(to as any, { scroll: smoothScroll ? false : scroll })
 				})
 			}}
 		>

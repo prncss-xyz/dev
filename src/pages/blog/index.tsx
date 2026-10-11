@@ -1,5 +1,6 @@
 import { allBlogs } from 'content-collections'
-import { Link } from 'waku'
+
+import { NavLink } from '@/components/NavLink'
 
 const page = getPage('blog')
 
@@ -24,12 +25,12 @@ export default async function PostsIndex() {
 				<Col as='ul' gap={6}>
 					{sortedBlogs.map((post) => (
 						<li key={post.slug}>
-							<Link to={`/blog/${post._meta.path}`}>
+							<NavLink to={`/blog/${post._meta.path}`}>
 								<Col>
 									<H2 textAlign='left'>{post.title}</H2>
 									<div>{post.date}</div>
 								</Col>
-							</Link>
+							</NavLink>
 						</li>
 					))}
 				</Col>
