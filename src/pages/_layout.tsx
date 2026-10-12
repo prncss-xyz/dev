@@ -9,6 +9,7 @@ import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
 import { DocumentScrollbars } from '@/layouts/DocumentScrollbars'
+import { Header } from '@/layouts/Header'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
 import { breakpoints } from '@/layouts/tokens/breakpoints.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
@@ -23,13 +24,11 @@ const styles = stylex.create({
 			[breakpoints.md]: spaces[7],
 		},
 	},
-	header: {
-		position: 'sticky',
-		top: 0,
-		zIndex: 10,
-		backgroundColor: colors.background,
-	},
 	headerContents: {
+		// Keep an opaque background behind the links for contrast checking,
+		// while leaving the bottom padding clear for the header's hairline.
+		backgroundColor: colors.background,
+		backgroundClip: 'content-box',
 		paddingLeft: {
 			default: spaces[5],
 			[breakpoints.md]: '0px',
@@ -84,7 +83,7 @@ export default async function RootLayout({
 			/>
 			<DevStyleXInject />
 			<DocumentScrollbars />
-			<Col as='header' style={styles.header} w='full' align='center'>
+			<Header>
 				<Row
 					style={styles.headerContents}
 					pb={4}
@@ -115,7 +114,7 @@ export default async function RootLayout({
 						})}
 					</Row>
 				</Row>
-			</Col>
+			</Header>
 			<Col
 				style={styles.contentPanel}
 				w='full'
