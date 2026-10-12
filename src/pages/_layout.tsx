@@ -11,6 +11,7 @@ import { DevStyleXInject } from '@/layouts/DevStyleXInject'
 import { DocumentScrollbars } from '@/layouts/DocumentScrollbars'
 import { Header } from '@/layouts/Header'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
+import { borderWidth } from '@/layouts/tokens/borderWidth.stylex'
 import { breakpoints } from '@/layouts/tokens/breakpoints.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
 import { sizes } from '@/layouts/tokens/sizes.stylex'
@@ -29,7 +30,7 @@ const styles = stylex.create({
 		width: sizes.full,
 		zIndex: 10,
 		backgroundColor: colors.background,
-		backgroundImage: `linear-gradient(${colors.text}, ${colors.text})`,
+		backgroundImage: `linear-gradient(${colors.black}, ${colors.black})`,
 		backgroundPosition: 'bottom',
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: {
@@ -63,6 +64,11 @@ const styles = stylex.create({
 			default: '0px',
 			[breakpoints.md]: borderRadii[1],
 		},
+	},
+	footer: {
+		borderBottomColor: colors.black,
+		borderBottomStyle: 'solid',
+		borderBottomWidth: borderWidth.thin,
 	},
 	contentPanel: {
 		paddingTop: {
@@ -138,14 +144,13 @@ export default async function RootLayout({
 				pb={6}
 				gap={7}
 				align='center'
-				justify='between'
+				justify='start'
 			>
 				<Col
 					bg='background'
 					style={styles.panel}
 					maxW='full'
 					w='readable'
-					grow={1}
 					as='main'
 				>
 					<PageContents>{children}</PageContents>
@@ -153,7 +158,7 @@ export default async function RootLayout({
 				<Row
 					maxW='full'
 					w='readable'
-					style={styles.panel}
+					style={[styles.panel, styles.footer]}
 					justify='center'
 					py={4}
 					color='accent'

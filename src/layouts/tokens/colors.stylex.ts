@@ -1,6 +1,7 @@
 import { defineVars } from '@stylexjs/stylex'
 
 export const colors = defineVars({
+	black: '#090d16',
 	background: 'light-dark(#e2e8f0, #090d16)',
 	text: 'light-dark(#0f172a, #f8fafc)',
 	muted: 'light-dark(#526279, #94a3b8)',
