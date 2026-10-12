@@ -13,6 +13,7 @@ import { Header } from '@/layouts/Header'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
 import { breakpoints } from '@/layouts/tokens/breakpoints.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
+import { sizes } from '@/layouts/tokens/sizes.stylex'
 import { spaces } from '@/layouts/tokens/spaces.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
@@ -22,6 +23,19 @@ const styles = stylex.create({
 		paddingTop: {
 			default: spaces[4],
 			[breakpoints.md]: spaces[7],
+		},
+	},
+	header: {
+		width: sizes.full,
+		zIndex: 10,
+		backgroundColor: colors.background,
+		backgroundImage: `linear-gradient(${colors.text}, ${colors.text})`,
+		backgroundPosition: 'bottom',
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: {
+			default: '100% 1px',
+			'@media (min-resolution: 2dppx)': '100% 0.5px',
+			'@media (min-resolution: 3dppx)': '100% 0.333333px',
 		},
 	},
 	headerContents: {
@@ -83,37 +97,39 @@ export default async function RootLayout({
 			/>
 			<DevStyleXInject />
 			<DocumentScrollbars />
-			<Header>
-				<Row
-					style={styles.headerContents}
-					pb={4}
-					gap={5}
-					maxW='full'
-					w='readable'
-					wrap
-					align='center'
-					justify='between'
-				>
-					<Box as={NavLink} to='/' fontSize={5}>
-						{title}
-					</Box>
-					<Row gap={5} wrap>
-						{allPages.map(({ slug, title }) => {
-							const to = '/' + (slug === 'about' ? '' : slug)
-							return (
-								<Box
-									as={NavLink}
-									key={to}
-									to={to}
-									style={styles.navLink}
-									fontSize={4}
-								>
-									{title}
-								</Box>
-							)
-						})}
+			<Header style={styles.header}>
+				<Col w='full' align='center'>
+					<Row
+						style={styles.headerContents}
+						pb={4}
+						gap={5}
+						maxW='full'
+						w='readable'
+						wrap
+						align='center'
+						justify='between'
+					>
+						<Box as={NavLink} to='/' fontSize={5}>
+							{title}
+						</Box>
+						<Row gap={5} wrap>
+							{allPages.map(({ slug, title }) => {
+								const to = '/' + (slug === 'about' ? '' : slug)
+								return (
+									<Box
+										as={NavLink}
+										key={to}
+										to={to}
+										style={styles.navLink}
+										fontSize={4}
+									>
+										{title}
+									</Box>
+								)
+							})}
+						</Row>
 					</Row>
-				</Row>
+				</Col>
 			</Header>
 			<Col
 				style={styles.contentPanel}

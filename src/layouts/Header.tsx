@@ -3,27 +3,19 @@
 import * as stylex from '@stylexjs/stylex'
 import { type ReactNode, useLayoutEffect, useRef, useState } from 'react'
 
-import { Col } from './Box'
-import { colors } from './tokens/colors.stylex'
-
 const styles = stylex.create({
 	header: (hidden: number) => ({
 		position: 'sticky',
 		top: -hidden,
-		zIndex: 10,
-		backgroundColor: colors.background,
-		backgroundImage: `linear-gradient(${colors.text}, ${colors.text})`,
-		backgroundPosition: 'bottom',
-		backgroundRepeat: 'no-repeat',
-		backgroundSize: {
-			default: '100% 1px',
-			'@media (min-resolution: 2dppx)': '100% 0.5px',
-			'@media (min-resolution: 3dppx)': '100% 0.333333px',
-		},
 	}),
 })
 
-export function Header({ children }: { children: ReactNode }) {
+type HeaderProps = {
+	children?: ReactNode
+	style?: stylex.StyleXStyles
+}
+
+export function Header({ children, style }: HeaderProps) {
 	const ref = useRef<HTMLElement>(null)
 	const [hidden, setHidden] = useState(0)
 
@@ -68,14 +60,8 @@ export function Header({ children }: { children: ReactNode }) {
 	}, [])
 
 	return (
-		<Col
-			as='header'
-			ref={ref}
-			w='full'
-			align='center'
-			style={styles.header(hidden)}
-		>
+		<header ref={ref} {...stylex.props(style, styles.header(hidden))}>
 			{children}
-		</Col>
+		</header>
 	)
 }
