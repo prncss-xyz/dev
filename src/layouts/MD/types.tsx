@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex'
 import { type ComponentProps } from 'react'
 
-export type ElemProps<
+type ElemProps<
 	T extends
 		| keyof React.JSX.IntrinsicElements
 		| React.JSXElementConstructor<any>,

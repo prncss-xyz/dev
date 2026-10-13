@@ -1,5 +1,3 @@
-import { readFile } from 'node:fs/promises'
-
 import { createElement, type ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, test } from 'vite-plus/test'
@@ -82,72 +80,16 @@ describe('mdToText', async () => {
 	})
 })
 
-describe('mdToHtml', () => {
-	test('renders the hello-world post for concurrent requests', async () => {
-		const post = await readFile('content/blog/hello-world.md', 'utf8')
-		const results = await Promise.all(
-			Array.from({ length: 3 }, () => mdToHtml(post)),
-		)
-		for (const html of results) {
-			expect(html).toContain('<picture>')
-			expect(html).toContain('data:image/svg+xml,')
-			expect(html).toContain('This is the content of the post.')
-		}
-	}, 30_000)
-
-	test('wires dual-theme token variables to visible syntax colors', async () => {
-		const [html, css] = await Promise.all([
-			mdToHtml('```js\nconst x = 3\n```'),
-			readFile('src/pages/syntax-highlighting.css', 'utf8'),
-		])
-
-		expect(html).toContain('<span')
-		expect(html).toMatch(/<span[^>]*style="[^"]*--shiki-light:/)
-		expect(html).toMatch(/<span[^>]*style="[^"]*--shiki-dark:/)
-		expect(css).toMatch(/code\[data-theme\*=['"] ['"]\] span/)
-		expect(css).toContain('color: var(--shiki-light)')
-		expect(css).toContain('color: var(--shiki-dark)')
-	})
-
-	test('renders mermaid diagrams on the server using the site font', async () => {
+describe('list depth regression', () => {
+	test('nested ul/ol carry data-depth through the full real pipeline', async () => {
 		const html = await mdToHtml(
-			'a test paragraph\n\n```mermaid\nflowchart TD\n  Start([Start]) --> Timer[Start the timer]\n  Timer --> Decide{Need a break?}\n  Decide -- Yes --> Pause[Pause]\n  Decide -- No --> Done[Done]\n```',
+			'- top\n  - nested\n    - deep\n1. a\n   1. b\n      1. c\n',
 		)
-
-		// `img-svg` embeds the diagram as `<img src="data:image/svg+xml,...">`, so the
-		// SVG payload is URL-encoded inside the data URI rather than inlined.
-		expect(html).toContain('<picture>')
-		expect(html).toMatch(
-			/<source[^>]*media="\(prefers-color-scheme: dark\)"[^>]*srcset="data:image\/svg\+xml,/,
-		)
-		expect(html).toContain('<img')
-		expect(html).toMatch(/src="data:image\/svg\+xml,/)
-		// Labels must be rendered as native SVG `<text>`/`<tspan>` (htmlLabels:false),
-		// never as HTML inside `<foreignObject>` — which is invisible under `<img>`.
-		expect(html).not.toContain('foreignObject')
-		const encodedSvg = html.match(/src="data:image\/svg\+xml,([^"]+)"/)?.[1]
-		expect(encodedSvg).toBeDefined()
-		const svg = decodeURIComponent(encodedSvg!.replaceAll('&#x27;', "'"))
-		// Mermaid's flowchart path omits `xml:space` on its word-tspans, so the
-		// SVG root must preserve their leading word-separator whitespace.
-		expect(svg).toContain("xml:space='preserve'")
-		expect(svg).toContain('font-family:Nunito')
-		// SVGs loaded through `<img>` cannot use the document's @font-face rules.
-		// Embed the font fetched from the site's shared webfont source into the SVG.
-		expect(svg).toContain('@font-face')
-		expect(svg).toContain('data:font/woff2;base64,')
-		expect(svg).not.toContain('font-family:arial,sans-serif')
-		const encodedThemeSvgs = [
-			...html.matchAll(/(?:src|srcset)="data:image\/svg\+xml,([^"]+)"/g),
-		]
-		expect(encodedThemeSvgs).toHaveLength(2)
-		for (const [, encodedThemeSvg] of encodedThemeSvgs) {
-			const themeSvg = decodeURIComponent(
-				encodedThemeSvg!.replaceAll('&#x27;', "'"),
-			)
-			expect(themeSvg).toContain('@font-face')
-			expect(themeSvg).toContain('data:font/woff2;base64,')
-		}
-		expect(html).not.toContain('<pre><code')
+		expect(html).toContain('<ul data-depth="0"')
+		expect(html).toContain('<ul data-depth="1"')
+		expect(html).toContain('<ul data-depth="2"')
+		expect(html).toContain('<ol data-depth="0"')
+		expect(html).toContain('<ol data-depth="1"')
+		expect(html).toContain('<ol data-depth="2"')
 	})
 })

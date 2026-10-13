@@ -2,12 +2,6 @@ import { describe, expect, test } from 'vite-plus/test'
 
 import { buildGoogleFontsCss2Url } from './fontConstants'
 
-export const siteFontFamily = 'Nunito'
-
-export const viteWebfontDownloadConfig = [
-	buildGoogleFontsCss2Url(siteFontFamily, [300, 400, 600, 700], [400, 700]),
-]
-
 describe('buildGoogleFontsCss2Url', () => {
 	test('builds a URL with non-italic weights only', () => {
 		expect(buildGoogleFontsCss2Url('Nunito', [400, 700])).toBe(
@@ -28,9 +22,10 @@ describe('buildGoogleFontsCss2Url', () => {
 	})
 
 	test('viteWebfontDownloadConfig matches the documented Nunito axes', () => {
-		expect(viteWebfontDownloadConfig).toEqual([
+		expect([
+			buildGoogleFontsCss2Url('Nunito', [300, 400, 600, 700], [400, 700]),
+		]).toEqual([
 			'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&display=block',
 		])
-		expect(siteFontFamily).toBe('Nunito')
 	})
 })
