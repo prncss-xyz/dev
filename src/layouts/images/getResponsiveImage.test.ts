@@ -10,25 +10,10 @@ import { basePath } from '@/meta'
 import { getResponsiveImage } from './getResponsiveImage'
 
 const remoteUrl = 'https://example.com/cat.png'
-const originalCacheRootEnv = process.env.RESPONSIVE_IMAGE_CACHE_ROOT
-const originalOutputDirEnv = process.env.RESPONSIVE_IMAGE_OUTPUT_DIR
 
 let cacheRoot = ''
 let emittedDir = ''
 let testRoot = ''
-
-function restoreEnv(key: string, value: string | undefined) {
-	if (value === undefined) {
-		delete process.env[key]
-		return
-	}
-
-	process.env[key] = value
-}
-
-function cleanGeneratedImages() {
-	return rm(testRoot, { force: true, recursive: true })
-}
 
 async function readFiles(directory: string) {
 	try {
@@ -67,15 +52,14 @@ describe('getResponsiveImage', () => {
 		testRoot = await mkdtemp(join(tmpdir(), 'responsive-images-test-'))
 		cacheRoot = join(testRoot, 'cache')
 		emittedDir = join(testRoot, 'gen')
-		process.env.RESPONSIVE_IMAGE_CACHE_ROOT = cacheRoot
-		process.env.RESPONSIVE_IMAGE_OUTPUT_DIR = emittedDir
+		vi.stubEnv('RESPONSIVE_IMAGE_CACHE_ROOT', cacheRoot)
+		vi.stubEnv('RESPONSIVE_IMAGE_OUTPUT_DIR', emittedDir)
 	})
 
 	afterEach(async () => {
 		vi.unstubAllGlobals()
-		await cleanGeneratedImages()
-		restoreEnv('RESPONSIVE_IMAGE_CACHE_ROOT', originalCacheRootEnv)
-		restoreEnv('RESPONSIVE_IMAGE_OUTPUT_DIR', originalOutputDirEnv)
+		vi.unstubAllEnvs()
+		await rm(testRoot, { force: true, recursive: true })
 	})
 
 	it('caches fetched originals and generated variants before emitting files', async () => {
